@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cover_height"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_avatar_blue"
+                android:id="@+id/profile_cover_image" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="200dp">
+
+                <EditText
+                    android:id="@+id/nickname"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    style="@style/Info"
+                    android:textSize="@dimen/text_size_largest"
+                    android:textStyle="bold"
+                    tools:text="用户名" />
+
+                <EditText
+                    android:id="@+id/introduction"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_large"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    style="@style/Info"
+                    tools:text="个人介绍" />
+
+                <Button
+                    android:id="@+id/chat"
+                    android:background="#EEEEEE"
+                    android:paddingLeft="@dimen/margin_large"
+                    android:text="@string/brief"
+                    android:gravity="start|center_vertical"
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nav_entry_height" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:cardCornerRadius="0dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_large">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    style="@style/Label"
+                    android:layout_marginTop="0dp"/>
+
+                <EditText
+                    android:id="@+id/gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Info"
+                    tools:text="男" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interest"
+                    style="@style/Label" />
+
+                <TextView
+                    android:id="@+id/interest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Info"
+                    tools:text="兴趣" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/area"
+                    style="@style/Label" />
+
+                <EditText
+                    android:id="@+id/area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Info"
+                    tools:text="广东 广州" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/modify_psw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E0E0E0"
+            android:text="修改密码"
+            android:visibility="gone"/>
+    </LinearLayout>
+</ScrollView>

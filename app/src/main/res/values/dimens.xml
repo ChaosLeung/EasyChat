@@ -1,0 +1,44 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="margin_tiny">8dp</dimen>
+    <dimen name="margin_small">12dp</dimen>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_bigger">18dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="default_margin">16.0dip</dimen>
+
+    <dimen name="nav_entry_height">48.0dip</dimen>
+    <dimen name="nav_icon_right_side_margin">32.0dip</dimen>
+    <dimen name="nav_icon_left_side_margin">@dimen/default_margin</dimen>
+    <dimen name="bt_nav_bottom_footer_padding">96.0dip</dimen>
+    <dimen name="bt_nav_width">304.0dip</dimen>
+    <dimen name="navdrawer_chosen_account_height">164dp</dimen>
+    <dimen name="navdrawer_profile_image_size">64dp</dimen>
+    <dimen name="keyline_1">24dp</dimen>
+    <dimen name="keyline_2_minus_16dp">56dp</dimen>
+    <dimen name="explore_spinner_width">200dp</dimen>
+    <dimen name="spinner_left_padding">16dp</dimen>
+    <dimen name="explore_dropdown_item_height">48dp</dimen>
+    <dimen name="tag_color_dot_size">12dp</dimen>
+
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_big">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_larger">22sp</dimen>
+    <dimen name="text_size_largest">24sp</dimen>
+
+    <dimen name="bt_nav_cluster_text_size">14.0sp</dimen>
+
+    <dimen name="avatar_small">48dp</dimen>
+    <dimen name="avatar_medium">56dp</dimen>
+    <dimen name="avatar_big">80dp</dimen>
+    <dimen name="avatar_large">96dp</dimen>
+
+    <dimen name="cover_height">200dp</dimen>
+
+    <dimen name="btn_height">32dp</dimen>
+    <dimen name="btn_width">48dp</dimen>
+</resources>

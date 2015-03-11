@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector android:exitFadeDuration="@android:integer/config_shortAnimTime" android:autoMirrored="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/msg_pressed_right" />
+    <item android:state_selected="true" android:drawable="@drawable/msg_selected_right" />
+    <item android:drawable="@drawable/msg_right" />
+</selector>

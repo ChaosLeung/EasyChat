@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top|left"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_small"
+        android:layout_height="@dimen/avatar_small"
+        android:src="@drawable/default_avatar_blue"
+        android:scaleType="centerCrop"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Message"
+        android:background="@drawable/msg_left_selector"
+        tools:text="在实时聊天系统中间，很多操作是需要有权限控制才能操作成功的, 比如：单聊的添加好友，群组的邀请、剔除操作等，都需要做一定权限认证。 客户端传一些参数给自有用户系统或者云代码（统称权限管理服务器），权限管理服务器端根据一定的逻辑判断操作是否合法，如果该操作是合法的，则返回一个正确的签名；"/>
+</LinearLayout>

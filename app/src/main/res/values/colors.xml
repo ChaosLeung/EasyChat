@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#ffdb4437</color>
+    <color name="primary_dark">#ffc53929</color>
+    <color name="accent">#1E88E5</color>
+    <color name="bt_light_grey">#fff6f6f6</color>
+
+    <color name="bt_nav_item_background">@android:color/white</color>
+    <color name="bt_nav_item_background_selected">@color/bt_light_grey</color>
+    <color name="bt_default_os_pressed_background_opaque">#ff33add6</color>
+
+    <color name="bt_nav_item_text_color">#de000000</color>
+
+    <color name="bt_drawer_background">@android:color/white</color>
+    <color name="bt_pressed_background">#33999999</color>
+    <color name="body_text_1_inverse">#deffffff</color>
+    <color name="body_text_2_inverse">#8affffff</color>
+    <color name="gray_background">#e5e5e5</color>
+    <color name="session_photo_scrim">#6000</color>
+    <color name="list_dropdown_divider_color">#92a3a3a3</color>
+    <color name="body_text_3">#60000000</color>
+    <color name="theme_primary_light">#7986cb</color>
+    <color name="list_dropdown_foreground_normal">#ff333333</color>
+
+    <color name="fab_color_1">#ff5252</color>
+    <color name="fab_color_1_muted">#ffd0d0</color>
+    <color name="fab_color_2">#9c27b0</color>
+    <color name="fab_color_2_muted">#a56ab0</color>
+
+    <color name="title_color">#fff</color>
+    <color name="grey">#9E9E9E</color>
+
+    <color name="white_button_ripple">#fff1f1f1</color>
+
+    <color name="window_bg">#FAFAFA</color>
+
+    <color name="actionbar_translucent_black_background">#80000000</color>
+    <color name="host_background">#ffe5e5e5</color>
+</resources>

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "org.zhj.easychat"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+
+    //avoscloud-sdk 为 LeanCloud基础包
+    compile 'cn.leancloud.android:avoscloud-sdk:v2.6.+'
+
+    //avoscloud-push 与 Java-WebSocket 为推送与IM需要的包
+    compile 'cn.leancloud.android:avoscloud-push:v2.6.+@aar'
+    compile 'cn.leancloud.android:Java-WebSocket:1.2.0-leancloud'
+
+    //avoscloud-statistics 为 LeanCloud 统计包
+    compile 'cn.leancloud.android:avoscloud-statistics:v2.6.+@aar'
+
+    //avoscloud-feedback 为 LeanCloud 用户反馈包
+    compile 'cn.leancloud.android:avoscloud-feedback:v2.6.+@aar'
+
+    //avoscloud-sns 为 LeanCloud 第三方登陆包
+    compile 'cn.leancloud.android:avoscloud-sns:v2.6.+@aar'
+    compile 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
+    compile 'cn.leancloud.android:weibo-sdk-android-sso:1.0.0-leancloud'
+
+    //avoscloud-search 为 LeanCloud 应用内搜索包
+    compile 'cn.leancloud.android:avoscloud-search:v2.6.+@aar'
+
+    compile 'com.squareup.picasso:picasso:2.5.0'
+}
