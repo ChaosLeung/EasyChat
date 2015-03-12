@@ -106,7 +106,7 @@ public class ChatMessageReceiver extends AVMessageReceiver {
 
     private ChatMessage covertMessage(AVMessage avMessage) {
         String userId = AVUser.getCurrentUser().getObjectId();
-        boolean isFrom = avMessage.getFromPeerId() != null;
+        boolean isFrom = !avMessage.getFromPeerId().equals(AVUser.getCurrentUser().getObjectId());
         ChatMessage message = new ChatMessage();
         message.setMsg(avMessage.getMessage());
         message.setPeerId(userId);

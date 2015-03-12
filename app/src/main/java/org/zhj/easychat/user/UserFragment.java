@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,20 +13,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.FollowCallback;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import org.zhj.easychat.LoginActivity;
 import org.zhj.easychat.R;
 import org.zhj.easychat.chat.ChatActivity;
-import org.zhj.easychat.database.User;
 import org.zhj.easychat.leancloud.LeanCloudUser;
+
+import java.util.List;
 
 /**
  * @author Chaos
@@ -49,17 +51,18 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
     private boolean isEditing = false;
     private boolean isSaving = false;
+    private boolean isFriend = false;
 
-    private LeanCloudUser mUser;
-    private String userId;
+    private LeanCloudUser mCurrentUser;
+    private String currentPageUserId;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (getArguments() != null && getArguments().containsKey("UserId")) {
-            userId = getArguments().getString("UserId");
+            currentPageUserId = getArguments().getString("UserId");
         } else {
-            userId = AVUser.getCurrentUser().getObjectId();
+            currentPageUserId = AVUser.getCurrentUser().getObjectId();
         }
     }
 
@@ -87,7 +90,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (AVUser.getCurrentUser() != null && userId.equals(AVUser.getCurrentUser().getObjectId())) {
+        if (AVUser.getCurrentUser() != null && currentPageUserId.equals(AVUser.getCurrentUser().getObjectId())) {
             getActivity().getMenuInflater().inflate(R.menu.menu_user_info, menu);
             menu.findItem(R.id.exit).setVisible(true);
         }
@@ -120,6 +123,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.exit:
                 AVUser.logOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
                 break;
         }
@@ -142,7 +146,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     }
 
     private void save() {
-        if (mUser != null) {
+        if (mCurrentUser != null) {
             isSaving = true;
             String nickname = nicknameText.getText().toString().trim();
             String introduction = introductionText.getText().toString().trim();
@@ -150,14 +154,14 @@ public class UserFragment extends Fragment implements View.OnClickListener {
             String area = areaText.getText().toString().trim();
             String interest = interestText.getText().toString().trim();
 
-            mUser.setNickname(nickname);
-            mUser.setIntroduction(introduction);
-            mUser.setGender(gender);
-            mUser.setArea(area);
-            mUser.setInterest(interest);
+            mCurrentUser.setNickname(nickname);
+            mCurrentUser.setIntroduction(introduction);
+            mCurrentUser.setGender(gender);
+            mCurrentUser.setArea(area);
+            mCurrentUser.setInterest(interest);
 
-            mUser.setFetchWhenSave(true);
-            mUser.saveInBackground(new SaveCallback() {
+            mCurrentUser.setFetchWhenSave(true);
+            mCurrentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
                     isSaving = false;
@@ -174,15 +178,28 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chat:
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("UserId", userId);
-                intent.putExtra("Nickname", mUser.getNickname());
-                startActivity(intent);
+                if (isFriend) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("UserId", currentPageUserId);
+                    intent.putExtra("Nickname", mCurrentUser.getNickname());
+                    startActivity(intent);
+                } else {
+                    chatButton.setClickable(false);
+                    AVUser.getCurrentUser().followInBackground(currentPageUserId, new FollowCallback() {
+                        @Override
+                        public void done(AVObject avObject, AVException e) {
+                            if (e == null || e.getCode() == AVException.DUPLICATE_VALUE) {
+                                Toast.makeText(getActivity(), "关注成功", Toast.LENGTH_SHORT).show();
+                                chatButton.setText("已关注");
+                            }
+                        }
+                    });
+                }
                 break;
             case R.id.avatar:
                 break;
             case R.id.modify_psw:
-                startActivity(new Intent(getActivity(),ModifyPswActivity.class));
+                startActivity(new Intent(getActivity(), ModifyPswActivity.class));
                 break;
         }
     }
@@ -204,25 +221,46 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchUserData() {
-        mUser = LeanCloudUser.getCurrentUser2();
-        if (mUser != null) {
-            if (userId.equals(mUser.getObjectId())) {
+        mCurrentUser = LeanCloudUser.getCurrentUser2();
+        if (mCurrentUser != null) {
+            if (currentPageUserId.equals(mCurrentUser.getObjectId())) {
                 setupUserInfo(LeanCloudUser.getCurrentUser2());
                 modifyPswButton.setVisibility(View.VISIBLE);
                 modifyPswButton.setOnClickListener(this);
                 return;
             } else {
-                //todo 检测是否互相关注
-                chatButton.setText(R.string.chat);
+                String currentUserId = mCurrentUser.getObjectId();
+                AVUser currentPageUser = new AVUser();
+                currentPageUser.setObjectId(currentPageUserId);
+                //关注
+                AVQuery<AVUser> followeeQuery = AVUser.followeeQuery(currentUserId, AVUser.class);
+                followeeQuery.whereEqualTo("followee", currentPageUser);
+                followeeQuery.limit(1);
+                //粉丝
+                AVQuery<AVUser> followerQuery = AVUser.followerQuery(currentUserId, AVUser.class);
+                followerQuery.whereEqualTo("follower", currentPageUser);
+                followerQuery.whereMatchesKeyInQuery("follower", "followee", followeeQuery);
+
+                followerQuery.findInBackground(new FindCallback<AVUser>() {
+                    @Override
+                    public void done(List<AVUser> list, AVException e) {
+                        if (e == null && list != null && list.size() == 1) {
+                            isFriend = true;
+                            chatButton.setText(R.string.chat);
+                            chatButton.setOnClickListener(UserFragment.this);
+                        } else {
+                            chatButton.setText("添加好友");
+                        }
+                    }
+                });
             }
         }
-        chatButton.setOnClickListener(this);
         AVQuery<LeanCloudUser> query = AVUser.getUserQuery(LeanCloudUser.class);
-        query.whereEqualTo("objectId", userId);
+        query.whereEqualTo("objectId", currentPageUserId);
         query.getFirstInBackground(new GetCallback<LeanCloudUser>() {
             @Override
             public void done(LeanCloudUser user, AVException e) {
-                mUser = user;
+                mCurrentUser = user;
                 if (user != null && e == null) {
                     chatButton.setClickable(true);
                     setupUserInfo(user);

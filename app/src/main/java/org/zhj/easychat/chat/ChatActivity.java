@@ -56,9 +56,6 @@ public class ChatActivity extends BaseActionBarActivity implements ChatMessageRe
 
     private MessagesAdapter adapter;
 
-    private User currentUser;
-    private User otherUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,16 +97,6 @@ public class ChatActivity extends BaseActionBarActivity implements ChatMessageRe
             @Override
             public void onClick(View v) {
                 String text = inputText.getText().toString().trim();
-//                ChatMessage message = new ChatMessage();
-//                message.setMsg(text);
-//                message.setPeerId(AVUser.getCurrentUser().getObjectId());
-//                message.setOtherPeerId(otherPeerId);
-//                message.setTimestamp(System.currentTimeMillis());
-//                message.setIsFrom(false);
-//                DatabaseManager.getInstance().getChatMessageDao().insert(message);
-//                adapter.add(message);
-//                adapter.notifyItemInserted(adapter.getItemCount() - 1);
-//                messagesView.scrollToPosition(adapter.getItemCount() - 1);
                 SessionService.getInstance().sendMessage(otherPeerId, text);
                 inputText.setText("");
             }
@@ -142,12 +129,6 @@ public class ChatActivity extends BaseActionBarActivity implements ChatMessageRe
 
     private void setupUserInfo() {
         otherPeerId = getIntent().getStringExtra("UserId");
-        QueryBuilder<User> qb = DatabaseManager.getInstance().getUserDao().queryBuilder();
-        qb.where(UserDao.Properties.PeerId.eq(otherPeerId));
-        otherUser = qb.unique();
-        qb = DatabaseManager.getInstance().getUserDao().queryBuilder();
-        qb.where(UserDao.Properties.PeerId.eq(AVUser.getCurrentUser().getObjectId()));
-        currentUser = qb.unique();
     }
 
     private void setupActionBar() {
@@ -230,7 +211,6 @@ public class ChatActivity extends BaseActionBarActivity implements ChatMessageRe
         public void onBindViewHolder(final ViewHolder holder, int position) {
             ChatMessage message = get(position);
             holder.message.setText(message.getMsg());
-//            loadAvatar(holder, (message.getIsFrom() ? otherUser : currentUser).getAvatarUrl());
             QueryBuilder<User> qb = DatabaseManager.getInstance().getUserDao().queryBuilder();
             qb.where(UserDao.Properties.PeerId.eq(message.getIsFrom() ? message.getOtherPeerId() : message.getPeerId()));
             User user = qb.unique();

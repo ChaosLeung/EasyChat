@@ -46,4 +46,6 @@ public class DatabaseManager {
     public ChatMessageDao getChatMessageDao() {
         return session.getChatMessageDao();
     }
+
+    public FriendDao getFriendDao(){return session.getFriendDao();}
 }

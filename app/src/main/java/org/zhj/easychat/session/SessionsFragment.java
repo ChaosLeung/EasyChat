@@ -26,11 +26,13 @@ import com.squareup.picasso.Picasso;
 import org.zhj.easychat.ArrayRecyclerAdapter;
 import org.zhj.easychat.R;
 import org.zhj.easychat.chat.ChatActivity;
+import org.zhj.easychat.chat.ChatMessageReceiver;
 import org.zhj.easychat.database.ChatMessage;
 import org.zhj.easychat.database.DatabaseManager;
 import org.zhj.easychat.database.User;
 import org.zhj.easychat.database.UserDao;
 import org.zhj.easychat.leancloud.LeanCloudUser;
+import org.zhj.easychat.user.UserInfoActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ import de.greenrobot.dao.query.QueryBuilder;
  * @author Chaos
  *         2015/02/22.
  */
-public class SessionsFragment extends Fragment {
+public class SessionsFragment extends Fragment implements ChatMessageReceiver.MessageListener {
 
     private RecyclerView sessionsView;
     private TextView noneTipsText;
@@ -97,13 +99,49 @@ public class SessionsFragment extends Fragment {
             public void onItemClick(ChatMessage chatMessage) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("UserId", chatMessage.getOtherPeerId());
-                User user= DatabaseManager.getInstance().getUserDao().queryBuilder().where(UserDao.Properties.PeerId.eq(chatMessage.getOtherPeerId())).unique();
+                User user = DatabaseManager.getInstance().getUserDao().queryBuilder().where(UserDao.Properties.PeerId.eq(chatMessage.getOtherPeerId())).unique();
                 intent.putExtra("Nickname", user.getNickname());
                 getActivity().startActivity(intent);
             }
         });
         if (chatMessages.size() > 0) {
             noneTipsText.setVisibility(View.GONE);
+        }
+        ChatMessageReceiver.addMessageListener(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        ChatMessageReceiver.removeMessageListener(this);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onMessage(ChatMessage message) {
+        updateMessageItem(message);
+    }
+
+    @Override
+    public void onMessageSent(ChatMessage message) {
+        updateMessageItem(message);
+    }
+
+    @Override
+    public void onMessageDelivered(ChatMessage message) {
+
+    }
+
+    @Override
+    public void onMessageFailure(ChatMessage message) {
+
+    }
+
+    private void updateMessageItem(ChatMessage message) {
+        for (ChatMessage preMsg : chatMessages) {
+            if (preMsg.getOtherPeerId().equals(message.getOtherPeerId())) {
+                sessionsAdapter.remove(preMsg);
+                sessionsAdapter.add(message);
+            }
         }
     }
 
@@ -125,7 +163,8 @@ public class SessionsFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, int i) {
             final ChatMessage session = get(i);
-            String otherPeerId = session.getOtherPeerId();
+
+            final String otherPeerId = session.getOtherPeerId();
             QueryBuilder<User> qb = DatabaseManager.getInstance().getUserDao().queryBuilder();
             qb.where(UserDao.Properties.PeerId.eq(otherPeerId));
             final User user = qb.unique();
@@ -135,10 +174,10 @@ public class SessionsFragment extends Fragment {
             viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(context, UserInfoActivity.class);
-//                    intent.putExtra("UserId", session.getOtherPeerId());
-//                    intent.putExtra("Nickname", user.getNickname());
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, UserInfoActivity.class);
+                    intent.putExtra("UserId", otherPeerId);
+                    intent.putExtra("Nickname", user.getNickname());
+                    context.startActivity(intent);
                 }
             });
 

@@ -27,4 +27,7 @@
     <string name="old_psw">原密码</string>
     <string name="new_psw">新密码</string>
     <string name="new_psw_twice">确认密码</string>
+    <string name="search_title">搜索</string>
+    <string name="search_hint">输入用户帐号或用户名</string>
+    <string name="add_friend">添加好友</string>
 </resources>
