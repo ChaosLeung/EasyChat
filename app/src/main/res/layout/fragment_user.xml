@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/cover_height"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_avatar_blue"
-                android:id="@+id/profile_cover_image" />
+                android:id="@+id/avatar" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -98,7 +98,7 @@
                     android:text="@string/interest"
                     style="@style/Label" />
 
-                <TextView
+                <EditText
                     android:id="@+id/interest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

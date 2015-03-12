@@ -9,8 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVUser;
 
@@ -20,6 +22,11 @@ import org.zhj.easychat.user.UserFragment;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    /**
+     * 双击 Back 键退出计时器
+     */
+    private long exitTime = 0;
 
     private static final String[] TITLES = new String[]{"会话", "好友", "个人"};
 
@@ -114,6 +121,16 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return TITLES[position];
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再次按返回键退出", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
         }
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <EditText
+        android:id="@+id/old_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="@string/old_psw"
+        android:inputType="numberPassword"
+        android:digits="@string/rule_password" />
+
+    <EditText
+        android:id="@+id/new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/new_psw"
+        android:inputType="numberPassword"
+        android:digits="@string/rule_password" />
+
+    <EditText
+        android:id="@+id/new_password_twice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/new_psw_twice"
+        android:inputType="numberPassword"
+        android:digits="@string/rule_password" />
+
+    <Button
+        android:id="@+id/modify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="确认修改" />
+</LinearLayout>
