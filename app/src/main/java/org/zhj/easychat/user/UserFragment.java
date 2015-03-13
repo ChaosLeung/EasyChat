@@ -189,8 +189,8 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void done(AVObject avObject, AVException e) {
                             if (e == null || e.getCode() == AVException.DUPLICATE_VALUE) {
-                                Toast.makeText(getActivity(), "关注成功", Toast.LENGTH_SHORT).show();
-                                chatButton.setText("已关注");
+                                Toast.makeText(getActivity(), "添加好友请求成功", Toast.LENGTH_SHORT).show();
+                                chatButton.setText("已发送请求");
                             }
                         }
                     });
@@ -247,10 +247,10 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                         if (e == null && list != null && list.size() == 1) {
                             isFriend = true;
                             chatButton.setText(R.string.chat);
-                            chatButton.setOnClickListener(UserFragment.this);
                         } else {
                             chatButton.setText("添加好友");
                         }
+                        chatButton.setOnClickListener(UserFragment.this);
                     }
                 });
             }

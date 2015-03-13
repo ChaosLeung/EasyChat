@@ -56,6 +56,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".friend.FriendRequestsActivity"
+            android:launchMode="singleTop" />
+
         <receiver android:name=".chat.ChatMessageReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

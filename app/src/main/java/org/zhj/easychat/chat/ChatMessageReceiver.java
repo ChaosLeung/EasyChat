@@ -111,7 +111,6 @@ public class ChatMessageReceiver extends AVMessageReceiver {
         message.setMsg(avMessage.getMessage());
         message.setPeerId(userId);
         message.setOtherPeerId(isFrom ? avMessage.getFromPeerId() : avMessage.getToPeerIds().get(0));
-        logE(message.getOtherPeerId());
         message.setTimestamp(avMessage.getTimestamp());
         message.setIsFrom(isFrom);
         return message;
