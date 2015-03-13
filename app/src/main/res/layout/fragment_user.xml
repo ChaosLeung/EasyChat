@@ -51,6 +51,7 @@
                     android:textSize="@dimen/text_size_large"
                     android:layout_marginBottom="@dimen/margin_large"
                     style="@style/Info"
+                    android:hint="@string/introduction"
                     tools:text="个人介绍" />
 
                 <Button
@@ -90,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Info"
+                    android:hint="@string/gender"
                     tools:text="男" />
 
                 <TextView
@@ -103,6 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Info"
+                    android:hint="@string/interest"
                     tools:text="兴趣" />
 
                 <TextView
@@ -116,6 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Info"
+                    android:hint="@string/area"
                     tools:text="广东 广州" />
             </LinearLayout>
         </android.support.v7.widget.CardView>

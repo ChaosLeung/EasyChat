@@ -31,4 +31,5 @@
     <string name="search_hint">用户的帐号</string>
     <string name="add_friend">添加好友</string>
     <string name="none_friend_requests">暂无好友请求</string>
+    <string name="introduction">个人介绍</string>
 </resources>

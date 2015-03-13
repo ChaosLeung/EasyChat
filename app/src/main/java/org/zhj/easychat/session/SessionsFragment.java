@@ -137,12 +137,15 @@ public class SessionsFragment extends Fragment implements ChatMessageReceiver.Me
     }
 
     private void updateMessageItem(ChatMessage message) {
-        for (ChatMessage preMsg : chatMessages) {
+        for (ChatMessage preMsg : sessionsAdapter) {
             if (preMsg.getOtherPeerId().equals(message.getOtherPeerId())) {
-                sessionsAdapter.remove(preMsg);
-                sessionsAdapter.add(message);
+                preMsg.setMsg(message.getMsg());
+                preMsg.setTimestamp(message.getTimestamp());
+                sessionsAdapter.notifyItemChanged(sessionsAdapter.indexOf(preMsg));
+                return;
             }
         }
+        sessionsAdapter.add(0, message);
     }
 
     private static class SessionsAdapter extends ArrayRecyclerAdapter<ChatMessage, SessionsAdapter.ViewHolder> {

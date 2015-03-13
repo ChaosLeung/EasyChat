@@ -92,6 +92,10 @@ public class LoginActivity extends BaseActionBarActivity implements View.OnClick
         user.setUsername(username);
         user.setNickname(username);
         user.setPassword(password);
+        user.setInterest("未知");
+        user.setArea("未知");
+        user.setIntroduction("未知");
+        user.setGender("未知");
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(AVException e) {

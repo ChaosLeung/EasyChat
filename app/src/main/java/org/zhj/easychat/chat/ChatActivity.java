@@ -1,6 +1,7 @@
 package org.zhj.easychat.chat;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -139,7 +140,13 @@ public class ChatActivity extends BaseActionBarActivity implements ChatMessageRe
     private void queryChatMessage() {
         QueryBuilder<ChatMessage> qb = DatabaseManager.getInstance().getChatMessageDao().queryBuilder();
         qb.where(ChatMessageDao.Properties.OtherPeerId.eq(otherPeerId), ChatMessageDao.Properties.PeerId.eq(AVUser.getCurrentUser().getObjectId()));
-        qb.offset(chatMessages.size()).limit(50).orderAsc(ChatMessageDao.Properties.Id);
+        qb.orderAsc(ChatMessageDao.Properties.Id);
+//        String sql = String.format("SELECT * FROM CHAT_MESSAGE WHERE (OTHER_PEER_ID='%s' AND PEER_ID='%s') ORDER BY _id ASC LIMIT last_insert_rowid()-50,last_insert_rowid()", otherPeerId, AVUser.getCurrentUser().getObjectId());
+//        Cursor cursor=DatabaseManager.getInstance().getChatMessageDao().getDatabase().rawQuery(sql, null);
+//        while (cursor.moveToNext()){
+//            adapter.add(DatabaseManager.getInstance().getChatMessageDao().readEntity(cursor, 0));
+//        }
+//        cursor.close();
         adapter.addAll(0, qb.list());
         adapter.notifyDataSetChanged();
     }
