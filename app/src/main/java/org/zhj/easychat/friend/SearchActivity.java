@@ -95,6 +95,8 @@ public class SearchActivity extends BaseActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("搜索用户");
+
+        initData();
     }
 
     @Override
@@ -122,6 +124,11 @@ public class SearchActivity extends BaseActionBarActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent);
+    }
+
+    private void initData(){
+        AVQuery<LeanCloudUser> usernameQuery = LeanCloudUser.getUserQuery(LeanCloudUser.class);
+        usernameQuery.findInBackground(callback);
     }
 
     private void handleIntent(Intent intent) {
