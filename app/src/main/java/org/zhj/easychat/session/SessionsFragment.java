@@ -146,6 +146,11 @@ public class SessionsFragment extends Fragment implements ChatMessageReceiver.Me
             }
         }
         sessionsAdapter.add(0, message);
+        if (sessionsAdapter.size() > 0) {
+            noneTipsText.setVisibility(View.GONE);
+        } else {
+            noneTipsText.setVisibility(View.VISIBLE);
+        }
     }
 
     private static class SessionsAdapter extends ArrayRecyclerAdapter<ChatMessage, SessionsAdapter.ViewHolder> {
