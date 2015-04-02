@@ -48,22 +48,23 @@ public class LoginActivity extends BaseActionBarActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        String username = usernameInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
-        if (username.length() < 6) {
-            usernameInput.setError("帐号长度应大于6位");
-            return;
-        }
-        if (password.length() < 6) {
-            passwordInput.setError("密码长度应大于6位");
-            return;
-        }
         switch (v.getId()) {
             case R.id.sign_in:
+                String username = usernameInput.getText().toString().trim();
+                String password = passwordInput.getText().toString().trim();
+                if (username.length() < 6) {
+                    usernameInput.setError("帐号长度应大于6位");
+                    return;
+                }
+                if (password.length() < 6) {
+                    passwordInput.setError("密码长度应大于6位");
+                    return;
+                }
                 signIn(username, password);
                 break;
             case R.id.sign_up:
-                signUp(username, password);
+                startActivity(new Intent(this, SignUpActivity.class));
+                finish();
                 break;
         }
     }

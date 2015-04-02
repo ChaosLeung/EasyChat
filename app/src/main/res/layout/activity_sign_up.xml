@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:paddingLeft="24dp"
+             android:paddingRight="24dp">
+
+    <LinearLayout
+        android:id="@+id/mdf_info"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/nickname"
+            android:hint="@string/nickname"
+            android:layout_marginTop="24dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/area"
+            android:hint="@string/area"
+            android:layout_marginTop="12dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/interest"
+            android:hint="@string/interest"
+            android:layout_marginTop="12dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/introduction"
+            android:hint="@string/introduction"
+            android:layout_marginTop="12dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+
+        <RadioGroup
+            android:id="@+id/gender"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="36dp"
+                android:checked="true"
+                android:text="@string/male"/>
+
+            <RadioButton
+                android:id="@+id/female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:text="@string/female"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_up_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/username"
+            android:inputType="numberPassword"
+            android:digits="@string/rule_password"/>
+
+        <EditText
+            android:id="@+id/new_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/new_psw"
+            android:inputType="numberPassword"
+            android:digits="@string/rule_password"/>
+
+        <EditText
+            android:id="@+id/new_password_twice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/new_psw_twice"
+            android:inputType="numberPassword"
+            android:digits="@string/rule_password"/>
+
+        <Button
+            android:id="@+id/sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/sign_up"/>
+    </LinearLayout>
+</FrameLayout>
