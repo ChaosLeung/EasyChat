@@ -29,6 +29,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 public class FriendsAdapter extends ArrayRecyclerAdapter<Friend, FriendsAdapter.ViewHolder> {
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private Context context;
 
     public FriendsAdapter(Context context){
@@ -39,13 +40,17 @@ public class FriendsAdapter extends ArrayRecyclerAdapter<Friend, FriendsAdapter.
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener){
+        this.onItemLongClickListener=onItemLongClickListener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_friend, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Friend friend = get(position);
 
         final String otherPeerId = friend.getFriendPeerId();
@@ -95,6 +100,15 @@ public class FriendsAdapter extends ArrayRecyclerAdapter<Friend, FriendsAdapter.
                 }
             });
         }
+        if (onItemLongClickListener!=null){
+            holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    onItemLongClickListener.onItemLongClick(position);
+                    return false;
+                }
+            });
+        }
     }
 
     private void setupUserInfo(ViewHolder viewHolder, User user) {
@@ -114,6 +128,10 @@ public class FriendsAdapter extends ArrayRecyclerAdapter<Friend, FriendsAdapter.
 
     public interface OnItemClickListener {
         void onItemClick(Friend friend);
+    }
+
+    public interface OnItemLongClickListener{
+        void onItemLongClick(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

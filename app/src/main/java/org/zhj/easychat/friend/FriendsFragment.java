@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,11 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.FollowCallback;
 
 import org.zhj.easychat.R;
 import org.zhj.easychat.chat.ChatActivity;
@@ -40,6 +44,8 @@ public class FriendsFragment extends Fragment {
     private RecyclerView friendsView;
     private TextView noneTipsText;
     private FriendsAdapter friendsAdapter;
+
+    private int mPosition = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,9 +79,16 @@ public class FriendsFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+        friendsAdapter.setOnItemLongClickListener(new FriendsAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(int position) {
+                mPosition = position;
+            }
+        });
         if (friendsAdapter.size() > 0) {
             noneTipsText.setVisibility(View.GONE);
         }
+        registerForContextMenu(friendsView);
     }
 
     @Override
@@ -130,5 +143,33 @@ public class FriendsFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.context_menu_friends, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete:
+                Friend friend = friendsAdapter.get(mPosition);
+                AVUser.getCurrentUser().unfollowInBackground(friend.getFriendPeerId(), new FollowCallback() {
+                    @Override
+                    public void done(AVObject avObject, AVException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(),"删除好友成功",Toast.LENGTH_SHORT).show();
+                            friendsAdapter.remove(mPosition);
+                            friendsAdapter.notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(getActivity(),"删除好友失败",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

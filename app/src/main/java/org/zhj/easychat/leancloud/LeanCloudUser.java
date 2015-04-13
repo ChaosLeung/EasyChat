@@ -1,10 +1,6 @@
 package org.zhj.easychat.leancloud;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.DeleteCallback;
-import com.avos.avoscloud.SaveCallback;
 
 /**
  * @author Chaos
@@ -18,8 +14,6 @@ public class LeanCloudUser extends AVUser {
     private static final String FIELD_GENDER = "gender";
     private static final String FIELD_AVATAR = "avatar";
     private static final String FIELD_INTEREST = "interest";
-
-    private AVFile avatar;
 
     public void setInterest(String interest) {
         put(FIELD_INTEREST, interest);
@@ -41,34 +35,8 @@ public class LeanCloudUser extends AVUser {
         put(FIELD_GENDER, gender);
     }
 
-    public void setAvatar(byte[] bytes) {
-        avatar = new AVFile(FIELD_AVATAR, bytes);
-    }
-
-    public void saveAll(final SaveCallback callback) {
-        setFetchWhenSave(true);
-        if (avatar != null) {
-            if (getAvatarAVFile() != null) {
-                getAvatarAVFile().deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            avatar.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(AVException e) {
-                                    if (e == null) {
-                                        put(FIELD_AVATAR, avatar);
-                                    }
-                                    saveInBackground(callback);
-                                }
-                            });
-                        } else {
-                            saveInBackground(callback);
-                        }
-                    }
-                });
-            }
-        }
+    public void setAvatar(String url) {
+        put(FIELD_AVATAR,url);
     }
 
     public String getInterest() {
@@ -91,22 +59,15 @@ public class LeanCloudUser extends AVUser {
         return getValue(FIELD_AREA);
     }
 
-    private AVFile getAvatarAVFile() {
-        return getValue(FIELD_AVATAR);
-    }
-
     public String getAvatarUrl() {
-        if (getAvatarAVFile() != null) {
-            return getAvatarAVFile().getUrl();
-        }
-        return null;
+        return getValue(FIELD_AVATAR);
     }
 
     private <T> T getValue(String key) {
         return (T) get(key);
     }
 
-    public static LeanCloudUser getCurrentUser2(){
+    public static LeanCloudUser getCurrentUser2() {
         return AVUser.getCurrentUser(LeanCloudUser.class);
     }
 }

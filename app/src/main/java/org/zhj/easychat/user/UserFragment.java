@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
@@ -30,6 +32,8 @@ import org.zhj.easychat.R;
 import org.zhj.easychat.chat.ChatActivity;
 import org.zhj.easychat.leancloud.LeanCloudUser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -142,7 +146,11 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         genderText.setEnabled(enable);
         areaText.setEnabled(enable);
         interestText.setEnabled(enable);
-        avatarImage.setClickable(enable);
+        if (enable) {
+            avatarImage.setOnClickListener(this);
+        } else {
+            avatarImage.setOnClickListener(null);
+        }
     }
 
     private void save() {
@@ -197,6 +205,9 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.avatar:
+                Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
+                getAlbum.setType("image/*");
+                startActivityForResult(getAlbum, 1);
                 break;
             case R.id.modify_psw:
                 startActivity(new Intent(getActivity(), ModifyPswActivity.class));
@@ -269,5 +280,44 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            try {
+                final AVFile file = AVFile.withAbsoluteLocalPath(AVUser.getCurrentUser().getObjectId(), FileUtils.getPath(getActivity(), data.getData()));
+                file.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            LeanCloudUser.getCurrentUser2().setAvatar(file.getUrl());
+                            LeanCloudUser.getCurrentUser2().setFetchWhenSave(true);
+                            LeanCloudUser.getCurrentUser2().saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(AVException e) {
+                                    if (e == null) {
+                                        Picasso.with(getActivity())
+                                                .load(file.getUrl())
+                                                .placeholder(R.drawable.default_avatar_blue)
+                                                .error(R.drawable.default_avatar_blue)
+                                                .resize(288, 288)
+                                                .centerCrop()
+                                                .into(avatarImage);
+                                        Toast.makeText(getActivity(), "上传头像成功", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "上传头像失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getActivity(), "上传头像失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
