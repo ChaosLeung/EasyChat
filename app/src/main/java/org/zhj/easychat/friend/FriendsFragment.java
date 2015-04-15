@@ -104,6 +104,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void done(List<AVUser> list, AVException e) {
                 if (e == null && list != null && list.size() > 0) {
+                    friendsAdapter.clear();
                     for (AVUser user : list) {
                         Friend friend = new Friend();
                         friend.setPeerId(AVUser.getCurrentUser().getObjectId());
