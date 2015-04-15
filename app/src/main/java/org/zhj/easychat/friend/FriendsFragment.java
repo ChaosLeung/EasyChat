@@ -155,16 +155,21 @@ public class FriendsFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete:
-                Friend friend = friendsAdapter.get(mPosition);
+                final Friend friend = friendsAdapter.get(mPosition);
                 AVUser.getCurrentUser().unfollowInBackground(friend.getFriendPeerId(), new FollowCallback() {
                     @Override
                     public void done(AVObject avObject, AVException e) {
                         if (e == null) {
-                            Toast.makeText(getActivity(),"删除好友成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "删除好友成功", Toast.LENGTH_SHORT).show();
                             friendsAdapter.remove(mPosition);
                             friendsAdapter.notifyDataSetChanged();
-                        }else {
-                            Toast.makeText(getActivity(),"删除好友失败",Toast.LENGTH_SHORT).show();
+                            String sql = "DELETE FROM FRIEND WHERE PEER_ID='" + AVUser.getCurrentUser().getObjectId() + "' AND FRIEND_PEER_ID='" + friend.getFriendPeerId() + "'";
+                            DatabaseManager.getInstance().getFriendDao().getDatabase().execSQL(sql);
+                            if (friendsAdapter.size() < 1) {
+                                noneTipsText.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "删除好友失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

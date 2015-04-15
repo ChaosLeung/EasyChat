@@ -291,9 +291,9 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
-                            LeanCloudUser.getCurrentUser2().setAvatar(file.getUrl());
-                            LeanCloudUser.getCurrentUser2().setFetchWhenSave(true);
-                            LeanCloudUser.getCurrentUser2().saveInBackground(new SaveCallback() {
+                            mCurrentUser.setAvatar(file.getUrl());
+                            mCurrentUser.setFetchWhenSave(true);
+                            mCurrentUser.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(AVException e) {
                                     if (e == null) {
