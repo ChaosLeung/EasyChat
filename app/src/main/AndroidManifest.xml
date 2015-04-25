@@ -64,6 +64,15 @@
             android:name=".friend.FriendRequestsActivity"
             android:launchMode="singleTop"/>
 
+        <activity
+            android:name=".posts.NewPostActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+
+        <activity
+            android:name=".posts.PostActivity"
+            android:launchMode="singleTop"/>
+
         <receiver android:name=".chat.ChatMessageReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

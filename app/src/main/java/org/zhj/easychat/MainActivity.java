@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVUser;
 
 import org.zhj.easychat.friend.FriendsFragment;
+import org.zhj.easychat.posts.PostsFragment;
 import org.zhj.easychat.session.SessionsFragment;
 import org.zhj.easychat.user.UserFragment;
 
@@ -28,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
      */
     private long exitTime = 0;
 
-    private static final String[] TITLES = new String[]{"会话", "好友", "个人"};
+    private static final String[] TITLES = new String[]{"话题", "会话", "好友", "个人"};
 
     private ViewPager viewPager;
 
@@ -102,6 +103,7 @@ public class MainActivity extends ActionBarActivity {
         public MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
             fragments = new Fragment[]{
+                    new PostsFragment(),
                     new SessionsFragment(),
                     new FriendsFragment(),
                     new UserFragment()
@@ -115,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override

@@ -36,4 +36,7 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="confirm">确认</string>
+
+    <string name="hint_title">话题</string>
+    <string name="hint_content">有什么内容分享？</string>
 </resources>

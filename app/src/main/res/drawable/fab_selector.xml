@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true" android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/fab_color_2_muted"/>
+        </shape>
+    </item>
+
+    <item android:state_checked="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/fab_color_2"/>
+        </shape>
+    </item>
+
+    <item android:state_checked="false" android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/fab_color_1_muted"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/fab_color_1"/>
+        </shape>
+    </item>
+
+</selector>
