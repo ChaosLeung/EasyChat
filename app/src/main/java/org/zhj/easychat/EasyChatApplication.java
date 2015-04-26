@@ -8,6 +8,7 @@ import com.avos.avoscloud.AVObject;
 import org.zhj.easychat.chat.SessionService;
 import org.zhj.easychat.database.DatabaseManager;
 import org.zhj.easychat.posts.Post;
+import org.zhj.easychat.posts.comment.Comment;
 
 /**
  * @author Chaos
@@ -21,6 +22,7 @@ public class EasyChatApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AVObject.registerSubclass(Comment.class);
         AVObject.registerSubclass(Post.class);
         AVOSCloud.initialize(this, APP_ID, APP_KEY);
         //todo 搞回去

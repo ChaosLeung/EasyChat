@@ -10,15 +10,19 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.squareup.picasso.Picasso;
 
 import org.zhj.easychat.R;
 import org.zhj.easychat.app.BaseActionBarActivity;
 import org.zhj.easychat.leancloud.LeanCloudUser;
+import org.zhj.easychat.posts.comment.Comment;
+import org.zhj.easychat.posts.comment.CommentFragment;
 import org.zhj.easychat.user.UserInfoActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -97,5 +101,11 @@ public class PostActivity extends BaseActionBarActivity {
                 }
             }
         });
+
+        CommentFragment fragment = new CommentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PostId", postObjId);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 }

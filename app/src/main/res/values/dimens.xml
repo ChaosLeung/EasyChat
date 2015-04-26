@@ -32,6 +32,7 @@
 
     <dimen name="bt_nav_cluster_text_size">14.0sp</dimen>
 
+    <dimen name="avatar_tiny">36dp</dimen>
     <dimen name="avatar_small">48dp</dimen>
     <dimen name="avatar_medium">56dp</dimen>
     <dimen name="avatar_big">80dp</dimen>

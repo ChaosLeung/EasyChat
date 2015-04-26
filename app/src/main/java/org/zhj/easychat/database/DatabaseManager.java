@@ -48,4 +48,8 @@ public class DatabaseManager {
     }
 
     public FriendDao getFriendDao(){return session.getFriendDao();}
+
+    public CommentDao getCommentDao(){
+        return session.getCommentDao();
+    }
 }

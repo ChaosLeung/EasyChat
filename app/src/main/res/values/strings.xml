@@ -39,4 +39,5 @@
 
     <string name="hint_title">话题</string>
     <string name="hint_content">有什么内容分享？</string>
+    <string name="input_comment">输入评论消息</string>
 </resources>

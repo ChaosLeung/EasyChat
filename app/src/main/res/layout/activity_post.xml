@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/default_margin">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/default_margin"
+                android:background="#fff">
 
     <org.zhj.easychat.ui.widget.BezelImageView
         android:id="@+id/avatar"
@@ -13,7 +14,7 @@
         android:layout_marginRight="@dimen/text_size_big"
         android:src="@drawable/person_image_empty"
         android:scaleType="centerCrop"
-        app:maskDrawable="@drawable/circle_mask" />
+        app:maskDrawable="@drawable/circle_mask"/>
 
     <TextView
         android:id="@+id/nickname"
@@ -25,7 +26,7 @@
         android:layout_toRightOf="@+id/avatar"
         android:layout_alignTop="@+id/avatar"
         android:textColor="#000"
-        tools:text="用户名" />
+        tools:text="用户名"/>
 
     <TextView
         android:id="@+id/updateTime"
@@ -35,7 +36,7 @@
         android:layout_toRightOf="@+id/avatar"
         android:layout_alignBottom="@+id/avatar"
         android:textColor="@color/grey"
-        tools:text="2014-01-02 13:24" />
+        tools:text="2014-01-02 13:24"/>
 
     <TextView
         android:id="@+id/content"
@@ -46,5 +47,18 @@
         android:textSize="@dimen/text_size_big"
         android:textColor="#000"
         android:layout_below="@+id/avatar"
-        tools:text="原始文字是人类用来紀錄特定事物、簡化圖像而成的書寫符號。文字在发展早期都是图画形式的表意文字（象形文字），與語音無甚關係，中國文字便是從此漸次演變而" />
+        tools:text="原始文字是人类用来紀錄特定事物、簡化圖像而成的書寫符號。文字在发展早期都是图画形式的表意文字（象形文字），與語音無甚關係，中國文字便是從此漸次演變而"/>
+
+    <View
+        android:id="@+id/divide"
+        android:layout_below="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/grey"/>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_below="@+id/divide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

@@ -71,7 +71,8 @@
 
         <activity
             android:name=".posts.PostActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize"/>
 
         <receiver android:name=".chat.ChatMessageReceiver">
             <intent-filter>
