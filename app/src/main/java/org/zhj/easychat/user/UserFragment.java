@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import org.zhj.easychat.LoginActivity;
 import org.zhj.easychat.R;
 import org.zhj.easychat.chat.ChatActivity;
 import org.zhj.easychat.leancloud.LeanCloudUser;
+import org.zhj.easychat.photo.PhotoActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +61,8 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
     private LeanCloudUser mCurrentUser;
     private String currentPageUserId;
+
+    private String newAvatarPath;
 
     @Override
     public void onAttach(Activity activity) {
@@ -169,17 +173,43 @@ public class UserFragment extends Fragment implements View.OnClickListener {
             mCurrentUser.setInterest(interest);
 
             mCurrentUser.setFetchWhenSave(true);
-            mCurrentUser.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(AVException e) {
-                    isSaving = false;
-                    if (e == null) {
-                        setEditing(false);
-                    }
-                    Toast.makeText(getActivity(), e == null ? "修改成功" : "修改失败", Toast.LENGTH_SHORT).show();
+
+            if (!TextUtils.isEmpty(newAvatarPath)) {
+                try {
+                    final AVFile file = AVFile.withAbsoluteLocalPath(AVUser.getCurrentUser().getObjectId(), newAvatarPath);
+                    file.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e == null) {
+                                mCurrentUser.setAvatar(file.getUrl());
+                                mCurrentUser.setFetchWhenSave(true);
+                                saveCurrentUser();
+                            } else {
+                                Toast.makeText(getActivity(), "上传头像失败", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
+            } else {
+                saveCurrentUser();
+            }
         }
+    }
+
+    private void saveCurrentUser() {
+        mCurrentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                isSaving = false;
+                if (e == null) {
+                    newAvatarPath = null;
+                    setEditing(false);
+                }
+                Toast.makeText(getActivity(), e == null ? "修改成功" : "修改失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -205,8 +235,10 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.avatar:
-                Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
-                getAlbum.setType("image/*");
+//                Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
+//                getAlbum.setType("image/*");
+//                startActivityForResult(getAlbum, 1);
+                Intent getAlbum = new Intent(getActivity(), PhotoActivity.class);
                 startActivityForResult(getAlbum, 1);
                 break;
             case R.id.modify_psw:
@@ -285,39 +317,13 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            try {
-                final AVFile file = AVFile.withAbsoluteLocalPath(AVUser.getCurrentUser().getObjectId(), FileUtils.getPath(getActivity(), data.getData()));
-                file.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            mCurrentUser.setAvatar(file.getUrl());
-                            mCurrentUser.setFetchWhenSave(true);
-                            mCurrentUser.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(AVException e) {
-                                    if (e == null) {
-                                        Picasso.with(getActivity())
-                                                .load(file.getUrl())
-                                                .placeholder(R.drawable.default_avatar_blue)
-                                                .error(R.drawable.default_avatar_blue)
-                                                .resize(288, 288)
-                                                .centerCrop()
-                                                .into(avatarImage);
-                                        Toast.makeText(getActivity(), "上传头像成功", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getActivity(), "上传头像失败", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        } else {
-                            Toast.makeText(getActivity(), "上传头像失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            newAvatarPath = data.getStringExtra("path");
+            Picasso.with(getActivity())
+                    .load(new File(newAvatarPath))
+                    .error(R.drawable.default_avatar_blue)
+                    .resize(288, 288)
+                    .centerCrop()
+                    .into(avatarImage);
         }
     }
 }

@@ -8,8 +8,8 @@ android {
         applicationId "org.zhj.easychat"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 9
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.8"
     }
     buildTypes {
         release {
