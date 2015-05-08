@@ -46,8 +46,9 @@ public class PhotoActivity extends BaseActionBarActivity {
         adapter.setOnItemClickListener(new OnItemClickListener<String>() {
             @Override
             public void onItemClick(String item) {
-                Intent intent = new Intent();
+                Intent intent = new Intent("org.zhj.easychat.ACTION_SELECT_AVATAR_PATH");
                 intent.putExtra("path", item);
+                sendBroadcast(intent);
                 setResult(RESULT_OK, intent);
                 finish();
             }

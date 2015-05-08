@@ -1,11 +1,13 @@
 package org.zhj.easychat.user;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +66,8 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
     private String newAvatarPath;
 
+    private AvatarPathReceiver avatarPathReceiver;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -72,6 +76,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         } else {
             currentPageUserId = AVUser.getCurrentUser().getObjectId();
         }
+        avatarPathReceiver = new AvatarPathReceiver();
     }
 
     @Override
@@ -94,6 +99,21 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -174,6 +194,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
             mCurrentUser.setFetchWhenSave(true);
 
+            Toast.makeText(getActivity(), "保存中，请稍候...", Toast.LENGTH_SHORT).show();
             if (!TextUtils.isEmpty(newAvatarPath)) {
                 try {
                     final AVFile file = AVFile.withAbsoluteLocalPath(AVUser.getCurrentUser().getObjectId(), newAvatarPath);
@@ -238,8 +259,9 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 //                Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
 //                getAlbum.setType("image/*");
 //                startActivityForResult(getAlbum, 1);
+                avatarPathReceiver.register(getActivity());
                 Intent getAlbum = new Intent(getActivity(), PhotoActivity.class);
-                startActivityForResult(getAlbum, 1);
+                startActivityForResult(getAlbum, 1000);
                 break;
             case R.id.modify_psw:
                 startActivity(new Intent(getActivity(), ModifyPswActivity.class));
@@ -316,7 +338,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1000 && data != null) {
             newAvatarPath = data.getStringExtra("path");
             Picasso.with(getActivity())
                     .load(new File(newAvatarPath))
@@ -324,6 +346,31 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                     .resize(288, 288)
                     .centerCrop()
                     .into(avatarImage);
+        }
+    }
+
+    private class AvatarPathReceiver extends BroadcastReceiver {
+
+        public void register(Context context) {
+            context.registerReceiver(this, new IntentFilter("org.zhj.easychat.ACTION_SELECT_AVATAR_PATH"));
+        }
+
+        public void unregister(Context context) {
+            context.unregisterReceiver(this);
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("org.zhj.easychat.ACTION_SELECT_AVATAR_PATH".equals(intent.getAction())) {
+                newAvatarPath = intent.getStringExtra("path");
+                Picasso.with(getActivity())
+                        .load(new File(newAvatarPath))
+                        .error(R.drawable.default_avatar_blue)
+                        .resize(288, 288)
+                        .centerCrop()
+                        .into(avatarImage);
+                avatarPathReceiver.unregister(getActivity());
+            }
         }
     }
 }
